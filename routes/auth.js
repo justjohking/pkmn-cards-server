@@ -59,4 +59,11 @@ router.get("/logout", (req, res, next) => {
   });
 });
 
+router.get("/isLoggedIn", async (req, res, next) => {
+  try {
+    const dbRes = await User.findById(req.session.currentUser);
+    res.status(200).json(dbRes);
+  } catch (error) {next(error)}
+})
+
 module.exports = router;
