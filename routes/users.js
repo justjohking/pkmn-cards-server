@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/User");
 const requireAuth = require("../middlewares/requireAuth");
 const router = express.Router();
+const mongoose = require("mongoose");
 
 router.get("/user/profile", (req, res, next) => {
   User.findById(req.session.currentUser._id)
