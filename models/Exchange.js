@@ -17,7 +17,6 @@ const exchangeSchema = new Schema({
   seller: {type: Schema.Types.ObjectId, ref: 'User'},
   buyer: {type: Schema.Types.ObjectId, ref: 'User'},
   status: { type: String, enum: ["pending", "completed"] }
-
 });
 
 const Exchange = mongoose.model("Exchange", exchangeSchema);
