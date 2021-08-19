@@ -47,6 +47,7 @@ app.use(
 app.use("/api", require("./routes/index"))
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
+app.use("/api/", require("./routes/cards"))
 app.use(require('./routes/bid'))
 
 // 404 Middleware
