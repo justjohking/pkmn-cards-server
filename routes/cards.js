@@ -49,7 +49,7 @@ router.get("/me/cards", async (req, res, next) => {
   // ADD A CARD TO A PARTICULAR COLLECTION
   router.patch("/collection/:type/:id", async (req, res, next) => {
     try{
-      await Collection.update({$and : [{type: req.params.type}, {owner:req.session.currentUser}]}, {$push: {cards: req.params.id}});
+      await Collection.findOneAndUpdate({$and : [{type: req.params.type}, {owner:req.session.currentUser}]}, {$push: {cards: req.params.id}});
       res.status(200).json()
     }
     catch (error) {next(error)}
