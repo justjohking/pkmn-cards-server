@@ -26,7 +26,7 @@ router.post("/signin", (req, res, next) => {
         _id: userDocument._id,
       };
 
-      res.redirect("/api/users/me");
+      res.redirect("/api/users/profile");
     })
     .catch(next);
 });
