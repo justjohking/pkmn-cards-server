@@ -1,7 +1,8 @@
 const express = require("express");
 const { json } = require("express");
 const router = express.Router();
-const Card = require("../models/Card")
+const Card = require("../models/Card");
+const Collection = require("../models/Collection")
 
 
 // GET ALL THE CARDS OF THE USER
@@ -45,5 +46,13 @@ router.get("/me/cards", async (req, res, next) => {
       } catch (error) { next(error)}
   })
 
+  // ADD A CARD TO A PARTICULAR COLLECTION
+  router.patch("/collection/:type/:id", async (req, res, next) => {
+    try{
+      await Collection.update({$and : [{type: req.params.type}, {owner:req.session.currentUser}]}, {$push: {cards: req.params.id}});
+      res.status(200).json()
+    }
+    catch (error) {next(error)}
+  })
 
 module.exports = router;
