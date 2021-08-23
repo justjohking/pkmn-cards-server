@@ -3,15 +3,23 @@ const User = require("../models/User");
 const requireAuth = require("../middlewares/requireAuth");
 const router = express.Router();
 
-router.get("/user/profile", (req, res, next) => {
-  User.findById(req.session.currentUser._id)
+router.get("/profile", (req, res, next) => {
+  
+  if(req.session.currentUser){
+    User.findById(req.session.currentUser._id)
     .then((user) => {
       res.status(200).json(user);
     })
-    .catch(next);
+    .catch(err => {
+      console.log(err)
+    });
+  }else {
+    console.log('hello')
+  }
+  
 });
 
-router.patch("/user/profile/edit", requireAuth, async (req, res, next) => {
+router.patch("/profile/edit", requireAuth, async (req, res, next) => {
   const id = req.session.currentUser._id
 
   if (!mongoose.isValidObjectId(id)) {
@@ -34,7 +42,7 @@ router.patch("/user/profile/edit", requireAuth, async (req, res, next) => {
 
 });
 
-router.delete('/user/profile/delete', requireAuth, async (req, res, next) => {
+router.delete('/profile/delete', requireAuth, async (req, res, next) => {
   const id = req.session.currentUser._id
 
   try {

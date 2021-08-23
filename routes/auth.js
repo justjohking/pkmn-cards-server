@@ -26,9 +26,11 @@ router.post("/signin", (req, res, next) => {
         _id: userDocument._id,
       };
 
-      res.redirect("/api/users/me");
+      res.status(200).json({message: "connected"});
     })
-    .catch(next);
+    .catch(err => {
+      console.log(err)
+    });
 });
 
 router.post("/signup", (req, res, next) => {
