@@ -3,9 +3,9 @@ const router = express.Router();
 const Card = require("../models/Card")
 
 
-router.get("/", (req, res, next) => {
-    /* nothing to render*/
-})
+// router.get("/", (req, res, next) => {
+//     /* nothing to render*/
+// })
 
 // GET ALL THE CARDS IN THE DB
 router.get("/cards", async (req, res, next) => {

@@ -67,7 +67,6 @@ router.get("/isLoggedIn", async (req, res, next) => {
   try {
     const dbRes = await User.findById(req.session.currentUser);
     res.status(200).json(dbRes);
-    console.log(Collection.schema.path('type.0').enumValues)
   } catch (error) {next(error)}
 })
 

@@ -2,7 +2,8 @@ const express = require("express");
 const { json } = require("express");
 const router = express.Router();
 const Card = require("../models/Card");
-const Collection = require("../models/Collection")
+const Collection = require("../models/Collection");
+const ObjectId = require('mongoose').Types.ObjectId;
 
 
 // GET ALL THE CARDS OF THE USER
@@ -46,11 +47,21 @@ router.get("/me/cards", async (req, res, next) => {
       } catch (error) { next(error)}
   })
 
-  // ADD A CARD TO A PARTICULAR COLLECTION
-  router.patch("/collection/:type/:id", async (req, res, next) => {
+  router.get("/me/collection/:type", async (req, res, next) => {
+    try {
+      const foundCollection = await Collection.find({$and : [{type: req.params.type}, {owner: ObjectId(req.session.currentUser._id)}]});
+      res.status(200).json(foundCollection);
+    } catch (error) {console.error(error)}
+  })
+
+  // FIND A PARTICULAR COLLECTION
+  router.patch("/me/collection/:type", async (req, res, next) => {
+    // console.log(typeof req.session.currentUser._id) // ==> string
+    // console.log(typeof req.params.type) // ==> string
+
     try{
-      await Collection.findOneAndUpdate({$and : [{type: req.params.type}, {owner:req.session.currentUser}]}, {$push: {cards: req.params.id}});
-      res.status(200).json()
+      await Collection.findOneAndUpdate({$and : [{type: req.params.type}, {owner: ObjectId(req.session.currentUser._id)}]}, req.body, {new : true});
+      res.status(200).json(req.body)
     }
     catch (error) {next(error)}
   })
