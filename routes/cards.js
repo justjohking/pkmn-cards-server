@@ -25,7 +25,7 @@ router.get("/me/cards", async (req, res, next) => {
   // Get all the users' versions of one card
   router.get("/me/cards/all/:apiId", async (req, res, next) => {
     try {
-      const oneCard = await Card.find({$and: [{pokemonTCGId : req.params.apiId.toString()}, {owner: req.session.currentUser._id}]});
+      const oneCard = await Card.find({$and: [{pokemonTCGId : req.params.apiId}, {owner: req.session.currentUser._id}]});
       res.status(200).json(oneCard)
     }
     catch (error) {next(error)}
