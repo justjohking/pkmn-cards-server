@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const Collection = require("../models/Collection");
 
 const salt = 10;
 
@@ -26,32 +27,35 @@ router.post("/signin", (req, res, next) => {
         _id: userDocument._id,
       };
 
-      res.status(200).json({message: "connected"});
+      res.redirect("/api/users/profile");
     })
     .catch(err => {
       console.log(err)
     });
 });
 
-router.post("/signup", (req, res, next) => {
-  const { email, password, firstName, lastName } = req.body;
+router.post("/signup", async (req, res, next) => {
+  try {
+    const { email, password, firstName, lastName } = req.body;
+    const foundUser = await User.findOne({ email });
 
-  User.findOne({ email })
-    .then((userDocument) => {
-      if (userDocument) {
-        return res.status(400).json({ message: "Email already taken" });
-      }
+    if (foundUser) {
+      return res.status(400).json({ message: "Email already taken" });
+    } 
+    const hashedPassword = bcrypt.hashSync(password, salt);
+    const newUser = { email, lastName, firstName, password: hashedPassword };
 
-      const hashedPassword = bcrypt.hashSync(password, salt);
-      const newUser = { email, lastName, firstName, password: hashedPassword };
+    const newlyCreatedUser = await User.create(newUser);
 
-      User.create(newUser)
-        .then(() => {
-          res.sendStatus(201);
-        })
-        .catch(next);
+    await Collection.schema.path('type').enumValues.forEach((collType) => {
+      Collection.create({type: collType, owner: newlyCreatedUser._id})
     })
-    .catch(next);
+
+    res.status(201).json(newlyCreatedUser)
+
+  } 
+  catch (error) {next(error)}
+    
 });
 
 router.get("/logout", (req, res, next) => {
