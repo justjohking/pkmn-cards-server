@@ -21,6 +21,15 @@ router.get("/me/cards", async (req, res, next) => {
       res.status(200).json(oneCard)
     } catch (error) { next(error) }
   })
+
+  // Get all the users' versions of one card
+  router.get("/me/cards/all/:apiId", async (req, res, next) => {
+    try {
+      const oneCard = await Card.find({$and: [{pokemonTCGId : req.params.apiId.toString()}, {owner: req.session.currentUser._id}]});
+      res.status(200).json(oneCard)
+    }
+    catch (error) {next(error)}
+  })
   
   // Add a card to the user's general collection
   router.post("/me/cards/add/", async (req, res, next) => {
