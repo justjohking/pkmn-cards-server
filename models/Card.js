@@ -9,6 +9,10 @@ const cardSchema = new Schema({
         enum: ["Mint", "Near Mint", "Bad", "Add More"]
     },
     price: Number,
+    onSale : {
+        type: Boolean, 
+        default: false
+    }
 })
 
 const Card = mongoose.model("Card", cardSchema);

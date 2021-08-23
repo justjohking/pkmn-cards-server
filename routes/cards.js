@@ -56,23 +56,28 @@ router.get("/me/cards", async (req, res, next) => {
       } catch (error) { next(error)}
   })
 
-  router.get("/me/collection/:type", async (req, res, next) => {
+  //Get all the cards of an collection
+  router.get("/me/collection/:collection", async (req, res, next) => {
     try {
-      const foundCollection = await Collection.find({$and : [{type: req.params.type}, {owner: ObjectId(req.session.currentUser._id)}]});
+      const foundCollection = await Collection.find({$and : [{type: req.params.collection}, {owner: ObjectId(req.session.currentUser._id)}]});
       res.status(200).json(foundCollection);
     } catch (error) {console.error(error)}
   })
 
-  // FIND A PARTICULAR COLLECTION
-  router.patch("/me/collection/:type", async (req, res, next) => {
-    // console.log(typeof req.session.currentUser._id) // ==> string
-    // console.log(typeof req.params.type) // ==> string
-
+  router.patch("/me/collection/:collection", async (req, res, next) => {
     try{
-      await Collection.findOneAndUpdate({$and : [{type: req.params.type}, {owner: ObjectId(req.session.currentUser._id)}]}, req.body, {new : true});
-      res.status(200).json(req.body)
+      const dbRes = await Collection.findOneAndUpdate({$and : [{type: req.params.collection}, {owner: req.session.currentUser._id}]}, req.body, {new : true});
+      res.status(200).json(dbRes)
     }
     catch (error) {next(error)}
+  })
+
+  // Get all the user cards of the same type
+  router.get("/me/cards/:apiId", (req, res, next) => {
+    try{
+
+    }
+    catch(error) {console.log(error)}
   })
 
   router.get('/collection/:type', async (req, res, next) => {
@@ -81,11 +86,7 @@ router.get("/me/cards", async (req, res, next) => {
       const cards = collec.reduce((acc,curr) => {
         return [...acc,...curr.cards]
       }, []);
-
-
-
-      
-
+    
       res.status(200).json(cards)
     }catch(error) {console.error(error)}
   })
