@@ -9,7 +9,11 @@ router.get("/profile", requireAuth, (req, res, next) => {
     .then((user) => {
       res.status(200).json(user);
     })
-    .catch(next);
+    .catch(err => {
+      console.log(err)
+    });
+  
+  
 });
 
 router.patch("/profile/edit", requireAuth, async (req, res, next) => {

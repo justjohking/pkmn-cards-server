@@ -75,4 +75,34 @@ router.get("/me/cards", async (req, res, next) => {
     catch (error) {next(error)}
   })
 
+  router.get('/collection/:type', async (req, res, next) => {
+    try {
+      const collec = await Collection.find({type: req.params.type}).populate("cards")
+      const cards = collec.reduce((acc,curr) => {
+        return [...acc,...curr.cards]
+      }, []);
+
+
+
+      
+
+      res.status(200).json(cards)
+    }catch(error) {console.error(error)}
+  })
+
+  router.post('/collection', async (req, res, next) => {
+    try {
+      console.log("hello")
+      const created = await Collection.create(req.body)
+      res.status(201).json(created)
+    }catch (error) { console.error(error)}
+  })
+
+  router.get('/cards/bids/:id', async (req, res, next) => {
+    try {
+      const card = await Card.find({_id: new ObjectId(req.params.id)})
+      res.status(200).json(card)
+    } catch (error) {console.log(error)}
+  })
+
 module.exports = router;

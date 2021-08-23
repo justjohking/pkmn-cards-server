@@ -29,7 +29,9 @@ router.post("/signin", (req, res, next) => {
 
       res.redirect("/api/users/profile");
     })
-    .catch(next);
+    .catch(err => {
+      console.log(err)
+    });
 });
 
 router.post("/signup", async (req, res, next) => {
