@@ -66,4 +66,22 @@ router.get("/me/cards", async (req, res, next) => {
     catch (error) {next(error)}
   })
 
+  router.get('/collection/:type', async (req, res, next) => {
+    try {
+      const collec = await Collection.find({type: req.params.type})
+      console.log("hello")
+      res.status(200).json(collec)
+    }catch(error) {console.error(error)}
+    
+  })
+
+  router.post('/collection', async (req, res, next) => {
+    try {
+      console.log("hello")
+      const created = await Collection.create(req.body)
+      res.status(201).json(created)
+    }catch (error) { console.error(error)}
+  })
+
+
 module.exports = router;
