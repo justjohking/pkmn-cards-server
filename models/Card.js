@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const cardSchema = new Schema({
-    pokemonTCGId: String,
+    tcgId: String,
     owner: {type: Schema.Types.ObjectId, ref:"User"},
     cardState: {
         type: String,

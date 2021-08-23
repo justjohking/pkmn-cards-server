@@ -32,7 +32,7 @@ router.get("/me/cards", async (req, res, next) => {
   })
   
   // Add a card to the user's general collection
-  router.post("/me/cards/add/", async (req, res, next) => {
+  router.post("/me/cards/add", async (req, res, next) => {
     try {
       const newCard = req.body;
       newCard.owner = req.session.currentUser._id
@@ -42,7 +42,7 @@ router.get("/me/cards", async (req, res, next) => {
   })
   
   // Update the information of one of the user's card (either condition or price)
-  router.patch("/me/cards/:id/edit/", async (req, res, next) => {
+  router.patch("/me/cards/:id/edit", async (req, res, next) => {
     try {
       const updatedCard = await Card.findByIdAndUpdate(req.params.id, req.body, {new : true});
       res.status(200).json(updatedCard);
@@ -72,21 +72,12 @@ router.get("/me/cards", async (req, res, next) => {
     catch (error) {next(error)}
   })
 
-  // Get all the user cards of the same type
-  router.get("/me/cards/:apiId", (req, res, next) => {
-    try{
-
-    }
-    catch(error) {console.log(error)}
-  })
-
   router.get('/collection/:type', async (req, res, next) => {
     try {
       const collec = await Collection.find({type: req.params.type}).populate("cards")
       const cards = collec.reduce((acc,curr) => {
         return [...acc,...curr.cards]
       }, []);
-    
       res.status(200).json(cards)
     }catch(error) {console.error(error)}
   })

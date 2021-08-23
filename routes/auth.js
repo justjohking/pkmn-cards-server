@@ -47,9 +47,7 @@ router.post("/signup", async (req, res, next) => {
 
     const newlyCreatedUser = await User.create(newUser);
 
-    await Collection.schema.path('type').enumValues.forEach((collType) => {
-      Collection.create({type: collType, owner: newlyCreatedUser._id})
-    })
+    Collection.create({type: "Buy", owner: newlyCreatedUser._id})
 
     res.status(201).json(newlyCreatedUser)
 

@@ -49,6 +49,7 @@ app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/", require("./routes/cards"))
 app.use(require('./routes/bid'))
+app.use("/", require("./routes/pokemonApi"))
 
 // 404 Middleware
 app.use((req, res, next) => {
