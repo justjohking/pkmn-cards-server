@@ -7,6 +7,7 @@ const bidSchema = new Schema({
     item: {type: Schema.Types.ObjectId, ref: 'Card'},
     initialPrice: Number,
     currentBid: Number,
+    previousBid: Number,
     startDate: Date,
     endDate: Date,
     status: {type: String, enum: ["ongoing", "completed"]}

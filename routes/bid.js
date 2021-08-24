@@ -31,7 +31,7 @@ router.post('/bids/create/', requireAuth, (req, res, next) => {
 })
 
 router.get('/bids/:id', requireAuth, (req, res, next) => {
-    Bid.findById(req.params.id).then((foundBid) => {
+    Bid.findById(req.params.id).populate("buyer").then((foundBid) => {
         res.status(200).json(foundBid)
     }).catch((err) => {
         console.log((err) => {
@@ -39,5 +39,18 @@ router.get('/bids/:id', requireAuth, (req, res, next) => {
             res.status(500).json(err)
         })
     })
+})
+
+router.patch('/bids/:id', requireAuth, (req, res, next) => {
+    const bid = req.body
+    bid.buyer = req.session.currentUser._id
+    Bid.findByIdAndUpdate(req.params.id, bid, {new: true})
+        .then((updatedBid) => {
+            res.status(200).json(updatedBid)
+        })
+        .catch(err => {
+            console.log(err)
+            res.status(500).json(err)
+        })
 })
 module.exports = router;
