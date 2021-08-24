@@ -92,7 +92,7 @@ router.get("/me/cards", async (req, res, next) => {
 
   router.get('/cards/bids/:id', async (req, res, next) => {
     try {
-      const card = await Card.find({_id: new ObjectId(req.params.id)})
+      const card = await Card.find({$and:[{pokemonTCGId: req.params.id}, {onSale: true}]}).populate("seller").populate("bid")
       res.status(200).json(card)
     } catch (error) {console.log(error)}
   })

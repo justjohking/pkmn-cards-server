@@ -6,7 +6,7 @@ const Card = require("../models/Card")
 
 
 router.get('/bids', requireAuth, (req, res, next) => {
-    Card.find({onSale : true})
+    Card.find({onSale: true})
         .then((foundBids) => {
             res.status(200).json(foundBids)
         })

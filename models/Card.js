@@ -12,7 +12,8 @@ const cardSchema = new Schema({
     onSale : {
         type: Boolean, 
         default: false
-    }
+    },
+    bid: {type: Schema.Types.ObjectId, ref:"Bid"}
 })
 
 const Card = mongoose.model("Card", cardSchema);
