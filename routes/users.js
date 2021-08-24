@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/User");
+const Bid = require('../models/Bid')
 const requireAuth = require("../middlewares/requireAuth");
 const router = express.Router();
 const mongoose = require("mongoose");
@@ -15,6 +16,17 @@ router.get("/profile", requireAuth, (req, res, next) => {
   
   
 });
+
+router.get('/profile/bids', requireAuth, (req, res, next) => {
+  Bid.find({$and: [{seller: req.session.currentUser._id}, { "buyer" : { "$exists" : true } }]})
+    .populate("item")
+    .then((foundBid => {
+      res.status(200).json(foundBid)
+    }))
+    .catch(err => {
+      console.log(err)
+    })
+})
 
 router.patch("/profile/edit", requireAuth, async (req, res, next) => {
   const id = req.session.currentUser._id

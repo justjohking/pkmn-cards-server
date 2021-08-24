@@ -53,4 +53,14 @@ router.patch('/bids/:id', requireAuth, (req, res, next) => {
             res.status(500).json(err)
         })
 })
+
+router.delete('/bids/:id', requireAuth, (req, res, next) => {
+    Bid.findByIdAndDelete(req.params.id)
+    .then(deletedDocument => {
+        res.status(200).json(deletedDocument)
+    })
+    .catch(err => {
+        console.log(err)
+    })
+})
 module.exports = router;
