@@ -2,10 +2,11 @@ const express = require("express");
 const Bid = require("../models/Bid");
 const requireAuth = require("../middlewares/requireAuth");
 const router = express.Router();
+const Card = require("../models/Card")
 
 
 router.get('/bids', requireAuth, (req, res, next) => {
-    Bid.find()
+    Card.find({onSale : true})
         .then((foundBids) => {
             res.status(200).json(foundBids)
         })
@@ -15,8 +16,11 @@ router.get('/bids', requireAuth, (req, res, next) => {
         })
 })
 
-router.post('/bids/create', requireAuth, (req, res, next) => {
-    Bid.create(req.body)
+router.post('/bids/create/', requireAuth, (req, res, next) => {
+    const bid = req.body
+    bid.seller = req.session.currentUser._id
+
+    Bid.create(bid)
         .then((createdBid) => {
             res.status(201).json(createdBid)
         })
