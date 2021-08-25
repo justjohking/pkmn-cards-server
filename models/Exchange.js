@@ -3,15 +3,8 @@ const Schema = mongoose.Schema;
 
 const exchangeSchema = new Schema({
 
-  
-  sellerItem: [{
-      type: Schema.Types.Mixed,
-      enum: [{Type: Schema.Types.ObjectId, ref: 'Card'}, Number],
-  }],
-  buyerItem: [{
-    type: Schema.Types.Mixed,
-    enum: [{Type: Schema.Types.ObjectId, ref: 'Card'}, Number],
-}],
+  sellerItem: {type: Schema.Types.ObjectId, ref: 'Card'},
+  buyerItem: [ {type: Schema.Types.ObjectId, ref: 'Card'} ],
   seller: {type: Schema.Types.ObjectId, ref: 'User'},
   buyer: {type: Schema.Types.ObjectId, ref: 'User'},
   status: { type: String, enum: ["pending", "completed"] }
