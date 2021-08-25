@@ -59,6 +59,13 @@ app.use("/api/*", (req, res, next) => {
   next(error);
 });
 
+if (process.env.NODE_ENV === "production") {
+  app.use("*", (req, res, next) => {
+    // If no routes match, send them the React HTML.
+    res.sendFile(path.join(__dirname, "public/build/index.html"));
+  });
+}
+
 // Error handler middleware
 // If you pass an argument to your next function in any of your routes or middlewares
 // You will end up in this middleware
@@ -66,10 +73,6 @@ app.use("/api/*", (req, res, next) => {
 app.use((err, req, res, next) => {
   if (process.env.NODE_ENV !== "production") {
     console.error(err);
-    app.use("*", (req, res, next) => {
-      // If no routes match, send them the React HTML.
-      res.sendFile(path.join(__dirname, "public/build/index.html"));
-    });
   }
   console.log("An error occured");
   res.status(err.status || 500);
