@@ -99,7 +99,7 @@ router.get("/me/cards", async (req, res, next) => {
 
 
   router.get('/profile/auctions', async (req, res, next) => {
-    await Bid.find({$and: [{seller: req.session.currentUser._id}]}).populate("item")
+    await Bid.find({$and: [{seller: req.session.currentUser._id}, { "buyer" : { "$exists" : true } }]}).populate("item")
     .then(response => res.status(200).json(response))
     .catch(error => next(error))
   })

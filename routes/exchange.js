@@ -30,4 +30,11 @@ router.post("/profile/exchanges/create", async (req,res,next) => {
     .then(response => res.status(201).json(response))
     .catch(error => next(error))
 })
+
+// delete an exchange (offer) 
+router.delete("/profile/exchanges/:id", async (req, res, next) => {
+    await Exchange.findByIdAndDelete(req.params.id)
+    .then(response => res.status(200).json(response))
+    .catch(error => next(error))
+})
 module.exports = router
