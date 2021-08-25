@@ -49,11 +49,13 @@ router.get("/pokemonApi/:id", async (req, res, next) => {
 
 // Search by name
 router.get("/pokemonApi/search/:name", async (req, res, next) => {
-    // console.log(req.params.name)
-    await axios
-    .get(`https://api.pokemontcg.io/v2/cards?q=name:${req.params.name}`)
-    .then((response) => {res.status(200).json(response)})
-    .catch(error => res.status(500).json(error))
+    pokemon.card.where({ q: 'name:blastoise' })
+    .then(result => { })
+
+    // await axios
+    // .get(`https://api.pokemontcg.io/v2/cards?q=name:${req.params.name}`)
+    // .then((response) => {res.status(200).json(response)})
+    // .catch(error => res.status(500).json(error))
 })
 
 module.exports = router;
