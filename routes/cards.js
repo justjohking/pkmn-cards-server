@@ -2,8 +2,8 @@ const express = require("express");
 const { json } = require("express");
 const router = express.Router();
 const Card = require("../models/Card");
-const Collection = require("../models/Collection");
 const ObjectId = require('mongoose').Types.ObjectId;
+const Bid = require("../models/Bid")
 
 
 // GET ALL THE CARDS OF THE USER
@@ -95,6 +95,13 @@ router.get("/me/cards", async (req, res, next) => {
       const card = await Card.find({$and:[{pokemonTCGId: req.params.id}, {onSale: true}]}).populate("owner").populate("bid")
       res.status(200).json(card)
     } catch (error) {console.log(error)}
+  })
+
+
+  router.get('/profile/auctions', async (req, res, next) => {
+    await Bid.find({$and: [{seller: req.session.currentUser._id}]}).populate("item")
+    .then(response => res.status(200).json(response))
+    .catch(error => next(error))
   })
 
 module.exports = router;
