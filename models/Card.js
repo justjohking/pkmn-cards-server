@@ -13,7 +13,11 @@ const cardSchema = new Schema({
         type: Boolean, 
         default: false
     },
-    bid: {type: Schema.Types.ObjectId, ref:"Bid"}
+    bid: {type: Schema.Types.ObjectId, ref:"Bid"},
+    openForExchange: {
+        type: Boolean, 
+        default: false
+    }
 })
 
 const Card = mongoose.model("Card", cardSchema);
