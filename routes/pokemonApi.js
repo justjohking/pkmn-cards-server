@@ -35,7 +35,7 @@ router.get("/pokemonApi/all/:page", async (req, res, next) => {
 
 router.get("/pokemonApi/:id", async (req, res, next) => {
 
-    pokemon.card.find({q: "name:" + req.params.id})
+    pokemon.card.find(req.params.id)
     .then(card => {res.status(200).json(card)})
     .catch(error => console.log(error))
 
