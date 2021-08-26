@@ -6,7 +6,7 @@ const router = express.Router();
 const mongoose = require("mongoose");
 
 router.get("/profile", requireAuth, (req, res, next) => {
-  User.findById(req.session.currentUser._id)
+  User.findById(req.session.currentUser._id).select("-password")
     .then((user) => {
       res.status(200).json(user);
     })
