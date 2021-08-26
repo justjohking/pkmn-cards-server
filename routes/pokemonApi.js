@@ -48,15 +48,19 @@ router.get("/pokemonApi/:id", async (req, res, next) => {
 })
 
 // Search by name
-router.get("/pokemonApi/search/:name", async (req, res, next) => {
-    pokemon.card.where({ q: 'name:blastoise' })
-    .then(result => { })
-
-    // await axios
-    // .get(`https://api.pokemontcg.io/v2/cards?q=name:${req.params.name}`)
-    // .then((response) => {res.status(200).json(response)})
-    // .catch(error => res.status(500).json(error))
+router.get("/pokemonApi/search/:name/:page", async (req, res, next) => {
+    await pokemon.card.where({ q: `name:${req.params.name}*`, pageSize: 40, page: req.params.page })
+    .then(results => { res.status(200).json(results)})
+    .catch(error => next(error))
 })
 
+router.get("/pokemonApi/search/type", async (req, res, next) => {
+    await pokemon.type.all().then(response => res.status(200).json(response))
+    .catch(error => next(error))
+})
+
+router.get("/pokemonApi/search/:type", async (req, res, next) => {
+    await pokemon.card.where({ q : `type:${req.params.type}`})
+})
 module.exports = router;
 
