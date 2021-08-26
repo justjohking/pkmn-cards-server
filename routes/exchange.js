@@ -37,4 +37,12 @@ router.delete("/profile/exchanges/:id", async (req, res, next) => {
     .then(response => res.status(200).json(response))
     .catch(error => next(error))
 })
+
+//get the exchange offer initiated by the user and over one particular item
+router.get("/profile/exchanges/:id", async (req, res, next) => {
+    await Exchange.find({buyer: req.session.currentUser._id}, {sellerItem: req.params.id})
+    .then(response => res.status(200).json(response))
+    .catch(error => next(error))
+})
+
 module.exports = router
