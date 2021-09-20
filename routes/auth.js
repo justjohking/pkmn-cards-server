@@ -36,14 +36,14 @@ router.post("/signin", (req, res, next) => {
 
 router.post("/signup", async (req, res, next) => {
   try {
-    const { email, password, firstName, lastName } = req.body;
-    const foundUser = await User.findOne({ email });
+    const { email, password, firstName, lastName, username } = req.body;
+    const foundUser = await User.findOne({ username });
 
     if (foundUser) {
-      return res.status(400).json({ message: "Email already taken" });
+      return res.status(400).json({ message: "Username already taken" });
     } 
     const hashedPassword = bcrypt.hashSync(password, salt);
-    const newUser = { email, lastName, firstName, password: hashedPassword };
+    const newUser = { email, lastName, firstName, username, password: hashedPassword };
 
     const newlyCreatedUser = await User.create(newUser);
 
