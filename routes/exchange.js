@@ -17,13 +17,15 @@ router.get("/exchanges/:tcgId", async(req, res, next) => {
     .catch(error => next(error))
 })
 
-router.get("/profile/exchanges", async (req, res, next) => {
+// Get all EXCHANGE OFFERS RECEIVED
+router.get("/user/exchanges/offers", async (req, res, next) => {
     await Exchange.find({seller: req.session.currentUser._id}).populate("sellerItem").populate("buyerItem")
     .then(response => res.status(200).json(response))
     .catch(error => next(error))
 })
 
-router.post("/profile/exchanges/create", async (req,res,next) => {
+// Create an EXCHANGE OFFER
+router.post("/user/exchanges/create", async (req,res,next) => {
     const exchange = req.body;
     exchange.buyer = req.session.currentUser._id;
     await Exchange.create(exchange)
@@ -32,14 +34,14 @@ router.post("/profile/exchanges/create", async (req,res,next) => {
 })
 
 // delete an exchange (offer) 
-router.delete("/profile/exchanges/:id", async (req, res, next) => {
+router.delete("/user/exchanges/:id", async (req, res, next) => {
     await Exchange.findByIdAndDelete(req.params.id)
     .then(response => res.status(200).json(response))
     .catch(error => next(error))
 })
 
 //get the exchange offer initiated by the user and over one particular item
-router.get("/profile/exchanges/:id", async (req, res, next) => {
+router.get("/user/exchanges/:id", async (req, res, next) => {
     await Exchange.find({buyer: req.session.currentUser._id}, {sellerItem: req.params.id})
     .then(response => res.status(200).json(response))
     .catch(error => next(error))

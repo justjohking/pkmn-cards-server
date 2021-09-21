@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const bidSchema = new Schema({
+const AuctionSchema = new Schema({
     buyer: {type: Schema.Types.ObjectId, ref: 'User'},
     seller: {type: Schema.Types.ObjectId, ref: 'User'},
     item: {type: Schema.Types.ObjectId, ref: 'Card'},
@@ -13,7 +13,7 @@ const bidSchema = new Schema({
     status: {type: String, enum: ["ongoing", "completed"]}
 })
 
-const Bid = mongoose.model("Bid", bidSchema);
+const Bid = mongoose.model("Auction", AuctionSchema);
 
 module.exports = Bid;
 

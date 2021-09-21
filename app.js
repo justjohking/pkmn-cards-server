@@ -48,7 +48,7 @@ app.use("/api", require("./routes/index"))
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/users"));
 app.use("/api", require("./routes/cards"))
-app.use("/api", require('./routes/bid'))
+app.use("/api", require('./routes/auction'))
 app.use("/api", require("./routes/exchange"))
 app.use("/api", require("./routes/pokemonApi"))
 

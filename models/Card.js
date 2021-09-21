@@ -13,7 +13,7 @@ const cardSchema = new Schema({
         type: Boolean, 
         default: false
     },
-    bid: {type: Schema.Types.ObjectId, ref:"Bid"},
+    bid: {type: Schema.Types.ObjectId, ref:"Auction"},
     openForExchange: {
         type: Boolean, 
         default: false
