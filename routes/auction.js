@@ -10,22 +10,16 @@ router.get('/auctions', requireAuth, (req, res, next) => {
     .then((foundAuctions) => {
         res.status(200).json(foundAuctions)
     })
-    .catch((err) => {
-        console.log(err)
-        res.status(500).json(err)
-    })
+    .catch((error) => {next(error)})
 })
 
 // Get one auction
 router.get('/auctions/:id', requireAuth, (req, res, next) => {
-    Auction.findById(req.params.id).populate("buyer").then((foundAuction) => {
+    Auction.findById(req.params.id).populate("buyer")
+    .then((foundAuction) => {
         res.status(200).json(foundAuction)
-    }).catch((err) => {
-        console.log((err) => {
-            console.log(err)
-            res.status(500).json(err)
-        })
     })
+    .catch((error) => {next(error)})
 })
 
 //Update an Auction (when placing a bid)
@@ -37,35 +31,33 @@ router.patch('/auctions/:id', requireAuth, (req, res, next) => {
     .then((updatedAuction) => {
         res.status(200).json(updatedAuction)
     })
-    .catch(err => {
-        console.log(err)
-        res.status(500).json(err)
-    })
+    .catch((error) => {next(error)})
 })
 
 // Create an auction
-router.post('/user/auctions/create/', requireAuth, (req, res, next) => {
-    const bid = req.body
-    bid.seller = req.session.currentUser._id
+router.post('/user/auctions/create', requireAuth, (req, res, next) => {
+    const auction = req.body;
+    auction.seller = req.session.currentUser._id;
 
-    Auction.create(bid)
+    Auction.create(auction)
     .then((createdAuction) => {
         res.status(201).json(createdAuction)
     })
-    .catch((err) => {
-        console.log(err)
-        res.status.status(500).json(err)
-    })
+    .catch((error) => {next(error)})
 })
 
-router.delete('/user/auctions/:id', requireAuth, (req, res, next) => {
+router.delete('/user/auctions/:id/delete', requireAuth, (req, res, next) => {
     Auction.findByIdAndDelete(req.params.id)
     .then(deletedDocument => {
         res.status(200).json(deletedDocument)
     })
-    .catch(err => {
-        console.log(err)
-    })
+    .catch((error) => {next(error)})
+})
+
+router.delete('/user/auctions/:id/deleteByItem', requireAuth, (req, res, next) => {
+    Auction.findOneAndDelete({item: req.params.id})
+    .then(() => { res.status(200).json("deleted") })
+    .catch((error) => {next(error)})
 })
 
 router.get('/user/auctions', requireAuth, (req, res, next) => {
@@ -74,9 +66,7 @@ router.get('/user/auctions', requireAuth, (req, res, next) => {
       .then((foundAuction => {
         res.status(200).json(foundAuction)
       }))
-      .catch(err => {
-        console.log(err)
-      })
+      .catch((error) => {next(error)})
 })
 
 // Get all AUCTIONS for a TCGCard
@@ -84,7 +74,8 @@ router.get('/auctions/:tcgId', async (req, res, next) => {
 try {
     const card = await Card.find({$and:[{pokemonTCGId: req.params.tcgId}, {onSale: true}]}).populate("owner").populate("bid")
     res.status(200).json(card)
-} catch (error) {console.log(error)}
+} 
+catch (error) {next(error)}
 })
 
 

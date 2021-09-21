@@ -9,7 +9,7 @@ const Auction = require("../models/Auction")
 // GET ALL THE CARDS OF THE USER
 router.get("/user/cards", async (req, res, next) => {
     try {
-      const allCards = await Card.find({owner: req.session.currentUser._id});
+      const allCards = await Card.find({owner: req.session.currentUser._id}).sort({pokemonTCGId: 1});
       res.status(200).json(allCards)
     } catch (error) { next(error) }
 })
@@ -23,7 +23,7 @@ router.get("/user/cards/:id", async (req, res, next) => {
 })
 
 // Get all the users' versions of one card
-router.get("/user/cards/:tcgID", async (req, res, next) => {
+router.get("/user/cards/tcg/:tcgID", async (req, res, next) => {
   try {
     const oneCard = await Card.find({$and: [{pokemonTCGId : req.params.tcgID}, {owner: req.session.currentUser._id}]});
     res.status(200).json(oneCard)
@@ -42,7 +42,7 @@ router.post("/user/cards/add", async (req, res, next) => {
 })
 
 // Update the information of one of the user's card (either condition or price)
-router.patch("/user/cards/:id/edit", async (req, res, next) => {
+router.patch("/user/cards/:id/update", async (req, res, next) => {
   try {
     const updatedCard = await Card.findByIdAndUpdate(req.params.id, req.body, {new : true});
     res.status(200).json(updatedCard);
