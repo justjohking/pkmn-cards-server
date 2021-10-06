@@ -70,7 +70,7 @@ router.get('/user/auctions', requireAuth, (req, res, next) => {
 })
 
 // Get all AUCTIONS for a TCGCard
-router.get('/auctions/:tcgId', async (req, res, next) => {
+router.get('/auctions/tcg/:tcgId', async (req, res, next) => {
 try {
     const card = await Card.find({$and:[{pokemonTCGId: req.params.tcgId}, {onSale: true}]}).populate("owner").populate("bid")
     res.status(200).json(card)
